@@ -1,0 +1,568 @@
+{
+  "name": "Reminder Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "Name"
+            },
+            {
+              "name": "Gmail"
+            },
+            {
+              "name": "Reminder time"
+            },
+            {
+              "name": "Event ID"
+            },
+            {
+              "name": "Location"
+            },
+            {
+              "name": "Status"
+            },
+            {
+              "name": "Action"
+            },
+            {
+              "name": "Title"
+            },
+            {
+              "name": "Meeting date"
+            },
+            {
+              "name": "Start time"
+            },
+            {
+              "name": "End time"
+            },
+            {
+              "name": "Reminder Sent"
+            },
+            {
+              "name": "Meet Link"
+            }
+          ]
+        }
+      },
+      "id": "7b82362c-72a0-4ab2-9a2d-b7235ccd83f2",
+      "typeVersion": 1.1,
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -1216,
+        512
+      ]
+    },
+    {
+      "parameters": {
+        "resume": "specificTime",
+        "dateTime": "={{ $json['Reminder time'] }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -928,
+        512
+      ],
+      "id": "a2cb3ffb-50b4-415a-bb54-a3ca3225e22b",
+      "name": "Wait",
+      "webhookId": "29e40932-7712-4eb9-8cae-bfafb2d671e9"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "db5b3bf1-19e9-4f44-a88c-08fa9f4620ec",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "cancelled",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "d944eb8c-d5c0-49b2-8a8f-17f83e9ba1d0",
+              "leftValue": "={{ $json['Reminder sent'] }}",
+              "rightValue": "no",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "5c7fae47-7911-4061-bae3-33f04cda59a7",
+              "leftValue": "={{ $json['Reminder time'] }}",
+              "rightValue": "={{ $('Wait').item.json['Reminder time'] }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -304,
+        560
+      ],
+      "id": "f0b0f140-716c-40a7-b786-09be6129178b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "event_ID",
+              "lookupValue": "={{ $json['Event ID'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -624,
+        512
+      ],
+      "id": "9637ab60-c6c3-4594-b9be-19b8de2198bc",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BPap4DXO6192BZc8",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "653222907882418",
+        "recipientPhoneNumber": "={{ String($json['WA ID']) }}",
+        "textBody": "=⏰ Reminder: You have a meeting on the topic \"{{ $json[\"Discussion topic\"] }}\" with {{ $json[\"Email\"] }} today at {{ $json[\"Start Time (IST)\"] }} IST ({{ $json[\"Meeting date\"] }}).  \nLocation: {{ $json[\"Location\"] }}\n\nMeeting Link : {{ $json['Google Meet Link'] }}",
+        "additionalFields": {
+          "previewUrl": true
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        32,
+        528
+      ],
+      "id": "4d4442cf-8056-4ba7-8d45-f987982b842e",
+      "name": "Send message",
+      "webhookId": "80d04ca7-a07e-4562-a821-e61cd9a403db",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "zA2AAYpsaZiKDA5q",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "event_ID": "={{ $json.event_ID }}",
+            "Reminder sent": "yes"
+          },
+          "matchingColumns": [
+            "event_ID"
+          ],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone number",
+              "displayName": "Phone number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Discussion topic",
+              "displayName": "Discussion topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Meeting date",
+              "displayName": "Meeting date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Start Time (IST)",
+              "displayName": "Start Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "End Time (IST)",
+              "displayName": "End Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Start_datetime (ISO)",
+              "displayName": "Start_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "End_datetime (ISO)",
+              "displayName": "End_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "event_ID",
+              "displayName": "event_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Meet Link",
+              "displayName": "Google Meet Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reminder",
+              "displayName": "Reminder",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reminder time",
+              "displayName": "Reminder time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Reminder sent",
+              "displayName": "Reminder sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        32,
+        160
+      ],
+      "id": "a8ff080a-82da-4d28-8583-b41d5555981a",
+      "name": "Update row in sheet",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "BPap4DXO6192BZc8",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Executed by Another\n**Called when another workflow is execute**",
+        "height": 260,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1296,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "4f494b28-1fe2-471d-b733-38416a1f5418",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Wait for reminder\n**Wait until the reminder time comes**",
+        "height": 260,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1008,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "03423a92-7664-4a4d-bf21-ff41627fa8f7",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Check Sheets\n**Check sheet before sending reminder.*",
+        "height": 260,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "ca26e984-e470-43e6-980c-b10ea53501f3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## IF Condition For Status and reminder sent\n**Check if the status is confirmed and reminder sent is no**",
+        "height": 260,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "6632d91d-4c13-47d8-afbe-3b2c71bb1b95",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Update the sheet\n**Set reminder sent as yes**",
+        "height": 260,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "9ee9badc-757c-485b-86fc-cae4d6a88c3a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Send WhatsApp message\n**Sends the reminder 30 minutes before the meeting**",
+        "height": 260,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        416
+      ],
+      "typeVersion": 1,
+      "id": "22fc0525-c992-4d98-a27c-c327794b1de2",
+      "name": "Sticky Note5"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ead98995-f782-4b1c-b134-77e7be6e15ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f8caf08ed0a014fad0ff4d689ec62fcdd244311cb6413f85dd9ad6bc672dd85d"
+  },
+  "id": "0a2xf7n97mEz0n6a",
+  "tags": []
+}

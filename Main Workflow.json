@@ -1,0 +1,2114 @@
+{
+  "name": "Main Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2784,
+        464
+      ],
+      "id": "cddaa1af-27e7-4b9a-a60c-88cc09282d14",
+      "name": "WhatsApp Trigger",
+      "webhookId": "37040c57-f496-49bb-933d-70e1f11755f3",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "FZGSx8zjt1rWMe5W",
+          "name": "WhatsApp OAuth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2176,
+        1744
+      ],
+      "id": "01ebbf3e-869c-43eb-ab05-9cdd826aaab5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "WiJe7HZEBufJjDJ4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Start Here \n**Waits for a new WhatsApp message from the user. This begins the appointment flow.**",
+        "height": 280,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2896,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "4117b6e9-8fb1-45a2-a092-1f400f99d8b1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Smart assistant brain \n**Understands messages, asks questions, and makes decisions using OpenAI + memory + tools.**",
+        "height": 280,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1184,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "f6ab884b-ea03-4310-b6e9-e51ecf51d29d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Reply to user \n**Sends a message back to the user on WhatsApp (e.g., confirming step or showing slots).**",
+        "height": 280,
+        "width": 264
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "f9ead2d2-88d8-4cfb-b6f2-3de984226433",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Chat engine \n**This is the brain that chats with the user and understands natural language.**",
+        "height": 280,
+        "width": 260
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2272,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "1b167127-e985-481a-a0f5-5ad3f5061348",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Remember stuff \n**Stores user's answers (email, name, time, etc.) across the conversation.**",
+        "height": 280,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1984,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "7e90f2e1-8459-4f0c-8cc3-b0ad3de6e81c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Create an event \n**Adds the confirmed appointment to the calendar.**",
+        "height": 280,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -400,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "b2f74429-0e77-45b0-a584-2b71aa080f24",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## New entry\n**Adds a new user if their email wasn’t found.**",
+        "height": 280,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1360,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "ee8dc590-72b0-4b52-984e-e7910a186a77",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "## Update info\n**Edits the row for the user (by email) to save name, phone, topic, or appointment time.**",
+        "height": 280,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1040,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "9226cd69-1346-4e7e-85a1-32afaae98035",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Read Data \n**Read Data From Sheet**",
+        "height": 280,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1664,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "22b9a9d5-ed56-4c09-804e-05acf00b15ee",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Start Time (IST)",
+              "lookupValue": "={{ $fromAI(\"start_datetime\").split(\"T\")[1].split(\"+\")[0] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -1552,
+        1744
+      ],
+      "id": "6d286202-f707-4ac9-b634-73ffe7d37ca7",
+      "name": "Google Sheets Read",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sLNV4aEZZnZHi96M",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{$fromAI(\"guest_email\")}}",
+            "Name": "={{$fromAI(\"name\", \"Not provided\")}}",
+            "Location": "={{$fromAI(\"location\", \"Online\")}}",
+            "Discussion topic": "={{$fromAI(\"title\")}}",
+            "Meeting date": "={{ $fromAI(\"start_datetime\").split(\"T\")[0] }}",
+            "Start Time (IST)": "={{ $fromAI(\"start_datetime\").split(\"T\")[1].split(\"+\")[0] }}",
+            "Status": "={{$fromAI(\"status\", \"confirmed\")}}",
+            "Phone number": "={{$fromAI(\"phone\", \"Not provided\")}}",
+            "event_ID": "={{ $fromAI(\"event_id\", \"N/A\") }}",
+            "Google Meet Link": "={{ $fromAI(\"meet_link\", \"N/A\") }}",
+            "Start_datetime (ISO)": "={{ $fromAI(\"start_datetime\") }}",
+            "End_datetime (ISO)": "={{ $fromAI(\"end_datetime\") }}",
+            "Reminder": "={{ $fromAI(\"reminder\") }}",
+            "Reminder time": "={{ $fromAI(\"reminder_time\") }}",
+            "Reminder sent": "={{ $fromAI(\"reminder_sent\") }}",
+            "End Time (IST)": "={{ $fromAI(\"end_datetime\").split(\"T\")[1].split(\"+\")[0] }}",
+            "WA ID": "={{ $(\"WhatsApp Trigger\").item.json.contacts[0].wa_id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "WA ID",
+              "displayName": "WA ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Phone number",
+              "displayName": "Phone number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Discussion topic",
+              "displayName": "Discussion topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Meeting date",
+              "displayName": "Meeting date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Start Time (IST)",
+              "displayName": "Start Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "End Time (IST)",
+              "displayName": "End Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Start_datetime (ISO)",
+              "displayName": "Start_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "End_datetime (ISO)",
+              "displayName": "End_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event_ID",
+              "displayName": "event_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Meet Link",
+              "displayName": "Google Meet Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder",
+              "displayName": "Reminder",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder time",
+              "displayName": "Reminder time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder sent",
+              "displayName": "Reminder sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -1248,
+        1744
+      ],
+      "id": "6ce5371d-20da-4fdc-9a5e-3f38f8e80253",
+      "name": "Google Sheets add",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sLNV4aEZZnZHi96M",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $fromAI(\"guest_email\") }}",
+            "Meeting date": "={{ $fromAI(\"new_start_datetime\").split(\"T\")[0] }}",
+            "Start Time (IST)": "={{$fromAI(\"new_start_datetime\").split(\"T\")[1].split(\"+\")[0]}}",
+            "End Time (IST)": "={{$fromAI(\"new_end_datetime\").split(\"T\")[1].split(\"+\")[0]}}",
+            "event_ID": "={{ $fromAI(\"event_id\", \"\") }}",
+            "Google Meet Link": "={{$fromAI(\"meet_link\")}}",
+            "Status": "={{$fromAI(\"status\", \"confirmed\")}}",
+            "row_number": "={{ $fromAI(\"rowIndex\") }}",
+            "Start_datetime (ISO)": "={{ $fromAI(\"new_start_datetime\") }}",
+            "End_datetime (ISO)": "={{ $fromAI(\"new_end_datetime\") }}",
+            "Reminder": "={{ $fromAI(\"reminder\", \"no\") }}",
+            "Reminder time": "={{ $fromAI(\"reminder_time\", \"\") }}"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Phone number",
+              "displayName": "Phone number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Discussion topic",
+              "displayName": "Discussion topic",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Meeting date",
+              "displayName": "Meeting date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Start Time (IST)",
+              "displayName": "Start Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "End Time (IST)",
+              "displayName": "End Time (IST)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Start_datetime (ISO)",
+              "displayName": "Start_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "End_datetime (ISO)",
+              "displayName": "End_datetime (ISO)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "event_ID",
+              "displayName": "event_ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Google Meet Link",
+              "displayName": "Google Meet Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder",
+              "displayName": "Reminder",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder time",
+              "displayName": "Reminder time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Reminder sent",
+              "displayName": "Reminder sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.6,
+      "position": [
+        -928,
+        1744
+      ],
+      "id": "dfedcf46-cc7c-4049-be5a-d1f506c4cceb",
+      "name": "Google Sheets Update",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sLNV4aEZZnZHi96M",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "mode": "id",
+          "value": "aryashah325@gmail.com",
+          "__regex": "(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)"
+        },
+        "eventId": "={{ $fromAI(\"event_id\") }}",
+        "options": {
+          "sendUpdates": "all"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -608,
+        1728
+      ],
+      "id": "fbaa53ec-d169-452e-adb2-4535e32e4fd9",
+      "name": "Delete an event in Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "F5r4LuDtS4ayxlak",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Delete an event\n**Delete an event from calendar.**",
+        "height": 280,
+        "width": 300
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -720,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "77227216-3dcc-41e1-9cb1-70154c4d2a50",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "id",
+          "value": "aryashah325@gmail.com",
+          "__regex": "(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)"
+        },
+        "start": "={{ $fromAI(\"start_datetime\") }}",
+        "end": "={{ $fromAI(\"end_datetime\") }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI(\"guest_email\") }}"
+          ],
+          "conferenceDataUi": {
+            "conferenceDataValues": {
+              "conferenceSolution": "hangoutsMeet"
+            }
+          },
+          "id": "={{ $json[\"id\"] }}",
+          "sendUpdates": "all",
+          "summary": "={{ $fromAI(\"discussion_topic\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        1744
+      ],
+      "id": "c56d9315-455c-4946-b888-2474b3ff4cf9",
+      "name": "calendar create",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "F5r4LuDtS4ayxlak",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are an AI assistant that schedules, cancels, and reschedules meetings for the owner Axit Mehta via WhatsApp messages. Always follow the steps that i have given you.\n\n-> You operate ONLY in Indian Standard Time (IST). Never convert timezones. Current time {{ $now }} (Fetching current time from this expression, if create meeting time is more than the 15 minutes of current time then continue the process and make the meeting)\n\n-> Tools Available:\n\nGoogle Calendar – create/update/delete meetings with Google Meet links  \nGoogle Sheets (Read/Add/Update) – to log or retrieve meeting data  \nGmail – to send confirmation, cancellation, or rescheduling emails  \nWhatsApp – to receive user requests and reply with confirmations or queries\n\n-> If the user asks if they have any meetings on a date (e.g., today (use {{ $now }} to get current date and set into the meeting_date.), tomorrow (use {{ $now }} + 1 to get the date and set into the meeting_date), 22 July), just return the following JSON and skip all other tools or steps. Do not perform any action other than emitting this JSON.\n\nIf the user provides a date, return:\n\n{\n  \"action\": \"check_status\",\n  \"meeting_date\": \"YYYY-MM-DD\"  // Convert date to this format (in IST)\n}\n\n\nIf no date is mentioned (e.g., user says: \"Do I have any meetings?\"), return:\n\n{\n  \"action\": \"check_status\"\n  \"meeting_date\": {{ $now }}\n}\n\n\n\n→ Do not include any message or explanation. Just output the JSON.\n\n-> For Scheduling:  \nExtract required fields:  \n- guest_email (e.g., aryashah@gmail.com, it can be more than 1 email)  \n- title (meeting subject)  \n- start_datetime (must be in future, ISO format)\n\n-> If the year is not specified, use the current year. Find current year from here {{ $now }}\n\n-> If the year is mentioned, then work according to that year mentioned in the message.\n\n-> If the given start_datetime is less than the current system time plus 1 minute buffer (Check the current time is from {{ $now }}) then respond:  \n\"That time has already passed. Please give a future date and time.\"  \n(This prevents incorrect rejection of current-day future times.)\n\n-> Check slot availability using a live Google Sheets Read only. Don’t use memory node to check availability. You must have to check Google Sheets read.\n\n-> If a row exists where:  \nstart_datetime is during or overlaps with any existing event's time range (between existing start_datetime and end_datetime)  \nAND status ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\n-> If a row exists where:  \nstart_datetime = new meeting's start_datetime  \nstatus ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\nExtract optional fields ONLY if the user explicitly mentioned them:\n- end_datetime → default to +30 minutes if not given  \n- name  \n- phone (must be in format 91XXXXXXXXXX)  \n- location (default: \"Online\" only if not mentioned)  \n- notes  \n- reminder = \"yes\"  \n- reminder_time → auto-calculate as 30 minutes before start_datetime\n\n-> If user enters input in the form of this : \"Create a meeting with Arya - xyz@gmail.com on 22july 2025 at 10am topic : Interview.\", Then Arya is a name so fetch that and xyz@gmail.com is gmail id. So dstore the name into json and sheet both.\n-> If location is \"Online\", include a Google Meet link.  \n-> If location is anything else (e.g., Office, Café), do NOT generate Meet link.\n\nMust follow this Steps to schedule the meeting:\n\n- Check if start_datetime is in the future and slot is free (Check slot using google sheet. Compulsory then follow below steps).  \n- If taken → ask for new time.  \n- Else:\n  - Create event in Google Calendar.  \n  - Generate Google Meet link only if location is \"Online\"  \n  - Get event_id, meet_link if applicable  \n  - Log the event into Google Sheets with:\n\n    guest_email, name, phone, title, location, notes, status, event_id, meet_link,  \n    start_datetime and end_datetime in full ISO format  \n    meeting_date = extract from start_datetime → format as DD-MM-YYYY  \n    start_time = extract from start_datetime → format as hh:mm AM/PM IST  \n    end_time = extract from end_datetime → format as hh:mm AM/PM IST  \n    reminder = \"yes\"  \n    reminder_time = 30 min before start_datetime (in ISO format)  \n    reminder_sent = \"no\"\n\n- While preparing data for Google Sheets, use the following conversions:  \n  - Extract meeting_date from start_datetime → format as DD-MM-YYYY  \n  - Extract start_time and end_time from start_datetime/end_datetime → format as hh:mm AM/PM in IST  \n  - reminder_time = start_datetime minus 30 minutes, in ISO format  \n  (Use IST always)\n\n- Send Gmail confirmation:  \n  Subject: [New Booking] - {{title}} at {{start_datetime}} IST  \n  Body: include all fields and Meet link (if present)\n\n- Send WhatsApp confirmation to owner\n\n-> For Cancellation:  \nRequired fields:\n- guest_email  \n- start_datetime\n\nMust follow this Steps to cancel the meeting:\n- Look up row in Sheet using guest_email + start_datetime (Always chcek google sheet before follow below steps to cancel the meeting and check whether there is any meeting or not.)  \n- Get event_id  \n- Delete from Calendar  \n- Update Sheet status = cancelled  \n- Send Gmail + WhatsApp cancellation message (important and must) (ALways genrate message and json as an output)\n\n-> For Rescheduling:  \nRequired:\n- Either guest_email or title  \n- original_start_datetime  \n- new_start_datetime (must be in future)\n\nMust follow this Steps to reschedule the meeting:\n- Look up row in Sheet using guest_email/title + original_start_datetime (Use google sheet for this compulsory and also Check slot of new timing using google sheet. Compulsory then follow below steps)  \n- Get event_id  \n- Update Calendar event (start, end, maybe location)  \n- Update Meet link if new location is Online  \n- Update Sheet with new values, and re-calculate:\n  - reminder = \"yes\"  \n  - reminder_time = 30 minutes before new start  \n- Send Gmail + WhatsApp reschedule message (Important and must)\n\n-> Rules (Strictly Follow):\n\n- Send email to guest everytime when schedule, reschedule occurs. (Must necessary part)  \n- Always use IST  \n- Reject past dates  \n- Don’t use optional fields unless explicitly given  \n- Default location = \"Online\" only if not specified  \n- Set reminder = \"yes\" always  \n- Calculate reminder_time = 30 min before start_datetime  \n- Never fake a meet link — only use from Calendar response  \n- Skip Google Meet if location ≠ Online  \n- Save event_id and meet_link to Google Sheets  \n- Phone must be 91XXXXXXXXXX format\n- Never create a fake meeting.\n- Always check Google Sheet before schedule, reschedule or cancelled the meeting.\n\n-> Response Style  \n- Respond only in natural, readable WhatsApp message format.  \n- Do NOT return JSON or code blocks.  \n- Do NOT wrap responses in ```json or curly braces.\n\n-> Use human-readable format for dates, such as:  \n(27th July 2025 at 5:00 PM IST)\n\n-> Message Templates:\n\n**For Scheduling:**\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=schedule]\n\n---\n\n**For Rescheduling:**\nThe meeting on the topic “{{title}}” has been rescheduled to {{formatted_datetime}} IST.\n\nUpdated Google Meet link: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=reschedule]\n\n---\n\n**For Cancellation:**\nThe meeting titled “{{title}}” created on {{formatted_datetime}} IST has been cancelled successfully.\n\nA confirmation email has been sent to {{guest_email}}.\n\n[meta: action=cancel]\n\n---\n\n**For any other message:**\nHello...! How can I help you related to calendar events organization?\n\n-> Make sure all variables like {{formatted_datetime}}, {{meet_link}}, and {{guest_email}} are filled before responding.  \n-> For optional fields (name, phone, notes):  \nIf user provides a value → use it  \nIf not → set as \"Not provided\"\n\n-> Never rely on memory or history to decide if a time is booked. Always check availability using a live read from Google Sheets.\n\n-> Current system time (IST): {{ $now }} (Please always refer this as it is very important to compare the timing.)\n\n\n-> After successfully schedule and reschedule and cancel the event, Output Should be look like this. (Very very important)\n\n#Message:\n\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n#JSON:\n\n{\n  \"Name\": \"{{ name || 'Not provided' }}\",\n  \"Gmail\": \"{{ guest_email }}\",\n  \"Reminder time\": \"{{ reminder_time }}\",\n  \"Event ID\": \"{{ event_id }}\",\n  \"Location\": \"{{ location }}\",\n  \"Status\": \"{{ status }}\",\n  \"Action\": \"schedule\" / \"reschedule\" / \"cancel\",\n  \"Title\": {{ discussion_topic}},\n  \"Meeting Date\": {{ meeting_date }},\n  \"Start Time\": {{ start_time }},\n  \"End Time\": {{ end_time }},\n  \"Meet Link\" : {{ meet_link }},\n  \"Reminder Sent\" : \"no\"\n}\n\n🔁 Replace schedule dynamically as per action type (schedule / reschedule / cancel)."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -1088,
+        480
+      ],
+      "id": "c86f8319-0852-475c-bbd8-4434c3dede56",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "form number should be here"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1872,
+        1744
+      ],
+      "id": "d19170ed-7606-4e96-86d1-a54f06f3818a",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "aryashah325@gmail.com",
+          "mode": "id"
+        },
+        "eventId": "={{ $fromAI(\"event_id\") }}",
+        "updateFields": {
+          "end": "={{ $fromAI(\"new_end_datetime\") || $fromAI(\"new_start_datetime\") + ':00' | plusOneHour }}",
+          "location": "={{ $fromAI(\"location\") }}",
+          "sendUpdates": "all",
+          "start": "={{ $fromAI(\"new_start_datetime\") }}",
+          "summary": "={{ $fromAI(\"title\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        1744
+      ],
+      "id": "e302ead1-80b9-49aa-9538-9e3493e29c2c",
+      "name": "Google Calendar Update",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "F5r4LuDtS4ayxlak",
+          "name": "Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Update an event\n**If any changes in event it update the calendar**",
+        "height": 280,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -80,
+        1616
+      ],
+      "typeVersion": 1,
+      "id": "c3bc19d3-53f2-4ae6-a69d-41dbf9ca39cc",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "653222907882418",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.message_output }}",
+        "additionalFields": {
+          "previewUrl": true
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        624,
+        480
+      ],
+      "id": "18db1b04-bf65-4e5b-b029-23a0589a087a",
+      "name": "Send message3",
+      "webhookId": "e113bea9-768e-48b8-a250-62c16550c591",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "5k1LCvxw6e9wDyxA",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6a5b1fcc-463a-448a-bbac-aaa1df62a063",
+              "leftValue": "={{ $json.json_output.action }}",
+              "rightValue": "schedule",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "07833359-fb2d-4b18-a0b0-f65d0da80ada",
+              "leftValue": "={{ $json.json_output.action }}",
+              "rightValue": "reschedule",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        160
+      ],
+      "id": "135da3c1-bece-4bba-ac3f-19a24f35ceb2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0a2xf7n97mEz0n6a",
+          "mode": "list",
+          "cachedResultName": "Reminder Workflow"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.json_output.Name }}",
+            "Gmail": "={{ $json.json_output.Gmail }}",
+            "Reminder time": "={{ $json.json_output['Reminder time'] }}",
+            "Event ID": "={{ $json.json_output['Event ID'] }}",
+            "Location": "={{ $json.json_output.Location }}",
+            "Status": "={{ $json.json_output.Status }}",
+            "Action": "={{ $json.json_output.Action }}",
+            "Title": "={{ $json.json_output.Title }}",
+            "Meeting date": "={{ $json.json_output['Meeting Date'] }}",
+            "Start time": "={{ $json.json_output['Start Time'] }}",
+            "End time": "={{ $json.json_output['End Time'] }}",
+            "Meet Link": "={{ $json.json_output['Meet Link'] }}",
+            "Reminder Sent": "={{ $json.json_output['Reminder Sent'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Gmail",
+              "displayName": "Gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Reminder time",
+              "displayName": "Reminder time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Event ID",
+              "displayName": "Event ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Location",
+              "displayName": "Location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Meeting date",
+              "displayName": "Meeting date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Start time",
+              "displayName": "Start time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "End time",
+              "displayName": "End time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Reminder Sent",
+              "displayName": "Reminder Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "Meet Link",
+              "displayName": "Meet Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {
+          "waitForSubWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        176
+      ],
+      "id": "636fe2f2-7d84-4fba-b567-00c7f73207ad",
+      "name": "Execute Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## Output Divider\n**It Divides output into two part 1) Message and 2) JSON**",
+        "height": 280,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -768,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "0a2fd74c-861f-4f90-b4f8-d6c79d43939a",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "## IF Condition For Action\n**Check whether action is schedule or reschedule**",
+        "height": 268,
+        "width": 280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -144,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "b8e9dfdd-06db-4b38-adba-59f82d20fc9b",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Call Another Workflow\n**Call another workflow known as reminder with the input of JSON data**",
+        "height": 300,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        32
+      ],
+      "typeVersion": 1,
+      "id": "111a2b3f-c6ff-4d59-8f2e-5370d7763b8d",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $json.messages[0].audio.id }}"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        -32
+      ],
+      "id": "e7e03f2f-db80-49a2-a4ab-fa9f800a543b",
+      "name": "Download media",
+      "webhookId": "5399ce8f-23d8-4987-b1b3-a96851186d99",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "5k1LCvxw6e9wDyxA",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1952,
+        -32
+      ],
+      "id": "1b439aa6-bb72-454d-b7ad-45726e0176bb",
+      "name": "HTTP Request2",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "5k1LCvxw6e9wDyxA",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -1632,
+        -32
+      ],
+      "id": "97d8383c-e8c9-4bcb-81e5-7145e007175a",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "WiJe7HZEBufJjDJ4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "f37ce3a1-4d5b-40d2-87b0-5525fed19645"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8f0889fe-15ed-47d5-bea5-835690726e26",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2432,
+        464
+      ],
+      "id": "a14b9bc2-e992-4017-a05f-d02f988cee04",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "89a90334-a9e9-4c12-8e3d-947f696f0cb0",
+              "name": "text",
+              "value": "={{ $json.messages[0].text.body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1744,
+        480
+      ],
+      "id": "923e26e2-e2ed-4340-958f-ee948c93372c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get transcribed text from Whisper\nconst inputText = $json.text || \"\";\n\n// Replace spoken words with symbols\nlet cleanedText = inputText\n  .toLowerCase()\n  .replace(/at the rate/gi, \"@\")\n  .replace(/dot/gi, \".\")\n  .replace(/underscore/gi, \"_\")\n  .replace(/dash/gi, \"-\")\n  .replace(/comma/gi, \",\")\n  .replace(/plus/gi, \"+\");\n\n// Remove all spaces around email symbols and in the whole string\ncleanedText = cleanedText.replace(/\\s*@\\s*/g, \"@\")\n                         .replace(/\\s*\\.\\s*/g, \".\")\n                         .replace(/\\s*-\\s*/g, \"-\")\n                         .replace(/\\s*,\\s*/g, \",\")\n                         .replace(/\\s*_\\s*/g, \"_\")\n                         .replace(/\\s*\\+\\s*/g, \"+\")\n                         .replace(/\\s+/g, \" \") // normalize multiple spaces\n                         .trim();\n\nreturn [\n  {\n    json: {\n      text: cleanedText,\n      original_text: inputText\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1312,
+        -32
+      ],
+      "id": "8d3efd6f-4e8c-4c92-9d4d-f16e969a5a0e",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "check_status",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notContains"
+                    },
+                    "id": "eab6f6df-899f-4eef-bd62-b6b031146027"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8e35ba1b-5e95-4183-8214-670275bf4389",
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "check_status",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -384,
+        480
+      ],
+      "id": "d59b6750-2eeb-42bf-be56-4175405a39da",
+      "name": "Switch1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Meeting date",
+              "lookupValue": "={{ $json.json_output.meeting_date }}"
+            },
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "confirmed"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": false
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        -16,
+        768
+      ],
+      "id": "e8175ab2-a3c5-414d-87f7-e6d3879b6775",
+      "name": "Get row(s) in sheet",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sLNV4aEZZnZHi96M",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst fullText = items[0].json.output?.trim() || \"\";\n\nlet messagePart = \"\";\nlet jsonText = \"\";\nlet parsedJSON = {};\n\n// Check for JSON with #JSON: prefix\nconst jsonFromHash = fullText.match(/#JSON:\\s*({[\\s\\S]*})/);\n\n// Check for JSON with or without \"JSON:\" or \"---\"\nconst jsonFromAny = fullText.match(/({[\\s\\S]*})/);\n\nif (jsonFromHash) {\n  // ✅ Case 1: Found #JSON: { ... }\n  jsonText = jsonFromHash[1].trim();\n  messagePart = fullText.replace(/#JSON:\\s*{[\\s\\S]*}/, \"\").trim();\n} else if (jsonFromAny) {\n  // ✅ Case 2: Found JSON block, possibly after \"JSON:\" or \"---\"\n  jsonText = jsonFromAny[1].trim();\n  \n  // Remove \"JSON:\", \"---\", or just the JSON block\n  messagePart = fullText\n    .replace(/---/, \"\")\n    .replace(/JSON:/i, \"\")\n    .replace(jsonText, \"\")\n    .trim();\n} else {\n  // ❌ No JSON found\n  jsonText = \"{}\";\n  messagePart = fullText;\n}\n\n// Try parsing and converting keys to lowercase\ntry {\n  const originalParsed = JSON.parse(jsonText);\n  parsedJSON = {};\n\n  for (const key in originalParsed) {\n    parsedJSON[key.toLowerCase()] = originalParsed[key];\n  }\n\n} catch (e) {\n  parsedJSON = { error: \"Invalid JSON extracted\", raw: jsonText };\n}\n\n// ✅ Final output\nreturn [\n  {\n    json: {\n      message_output: messagePart,\n      json_output: parsedJSON\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -672,
+        480
+      ],
+      "id": "b9f01576-94e4-4c9b-9d1f-d3e2e3475e2b",
+      "name": "Code5"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "schedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "a2170a1b-616f-4945-91f2-41926327c12e"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "69477d55-5c3c-4d21-94e2-dc238cd86228",
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "reschedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "38774d80-0161-43b9-886f-b77755cf94b1",
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "cancel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        0,
+        1232
+      ],
+      "id": "569f716e-9ce0-41de-aa44-1ece93ef7dd2",
+      "name": "Switch2"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.json_output.gmail }}",
+        "subject": "=Meeting Scheduled with Axit Mehta on {{ $json.json_output['meeting date'] }}",
+        "emailType": "text",
+        "message": "=Hello,  \nYour meeting with Axit Mehta has been successfully scheduled.\n\n📅 Date: {{ $json.json_output['meeting date'] }}\n⏰ Time: {{ $json.json_output['start time'] }} to {{ $json.json_output['end time'] }} IST   \n💼 Topic: {{ $json.json_output.title }}\n📍 Location: {{ $json.json_output.location }}\n\n🔗 Google Meet Link: {{ $json.json_output['meet link'] || \"Link not generated / not valid anymore.\" }}\n\n\nWe look forward to the discussion.  \n— Team Axit Mehta",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        624,
+        1024
+      ],
+      "id": "4dd12888-ae48-4e75-95ed-73576089623b",
+      "name": "Send a message",
+      "webhookId": "2e03f7c6-95c2-44e9-98b0-7f5d7c211a56",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2ZAmFxkCqxsqzJXf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.json_output.gmail }}",
+        "subject": "=Meeting Rescheduled with Axit Mehta – New Time on {{ $json.json_output['meeting date'] }}",
+        "emailType": "text",
+        "message": "=Hello,  Your meeting with Axit Mehta has been successfully rescheduled.\n\n📅 New Date: {{ $json.json_output['meeting date'] }}\n⏰ New Time: {{ $json.json_output['start time'] }} to {{ $json.json_output['end time'] }} IST\n💼 Topic: {{ $json.json_output.title }}\n📍 Location: {{ $json.json_output.location }}\n\n🔗 Updated Google Meet Link: {{ $json.json_output['meet link'] || \"Link not generated / not valid anymore.\" }}\n\nWe apologize for any inconvenience and appreciate your flexibility. \n— Team Axit Mehta",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        624,
+        1264
+      ],
+      "id": "88f34d2b-d928-4d0a-8049-8fc98dc0dfd5",
+      "name": "Send a message1",
+      "webhookId": "c7b3e4c7-55cf-420b-a55a-eb5786d7032b",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2ZAmFxkCqxsqzJXf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.json_output.gmail }}",
+        "subject": "=Meeting with Axit Mehta on {{ $json.json_output['meeting date'] }} has been Cancelled",
+        "emailType": "text",
+        "message": "=Hello,  \nYour meeting with Axit Mehta has been cancelled.  \n\n📅 Scheduled Date: {{ $json.json_output['meeting date'] }}   \n⏰ Scheduled Time: {{ $json.json_output['start time'] }} to {{ $json.json_output['end time'] }} IST   \n💼 Topic: {{ $json.json_output.title }}  \n\nIf this was unexpected or in error, feel free to reschedule.  \n— Team Axit Mehta",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        624,
+        1504
+      ],
+      "id": "4ad0b698-61f1-442d-87b9-75e7f56b2557",
+      "name": "Send a message2",
+      "webhookId": "7a71711a-1e8c-4d86-94cb-7a8b4c247e48",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2ZAmFxkCqxsqzJXf",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rows = $input.all(); // All rows from Google Sheet\n\n// Try to get meeting date from context (json_output from Switch1 or previous)\nconst context = $input.first().json || {};\nconst meetingDate = context['meeting_date'] || context['Meeting date'] || \"undefined\";\n\n// Filter meetings for selected date and not cancelled\nconst meetings = rows.filter(item => \n  item.json[\"Meeting date\"] === meetingDate &&\n  item.json[\"Status\"] !== \"cancelled\"\n);\n\nlet message_output;\n\nif (meetings.length === 0) {\n  message_output = `No confirmed meetings found.`;\n} else {\n  message_output = `Here are your confirmed meetings for ${meetingDate}:\\n\\n`;\n\n  for (const meeting of meetings) {\n    const start = meeting.json[\"Start Time (IST)\"] || meeting.json[\"Start Time\"] || \"unknown\";\n    const end = meeting.json[\"End Time (IST)\"] || meeting.json[\"End Time\"] || \"unknown\";\n    const title = meeting.json[\"Discussion topic\"] || meeting.json[\"Title\"] || \"No topic\";\n\n    message_output += `🕒 ${start} - ${end}\\n📌 ${title}\\n\\n`;\n  }\n}\n\nreturn [\n  {\n    json: {\n      message_output,\n      WA_ID: $('WhatsApp Trigger').first().json.contacts[0].wa_id\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        768
+      ],
+      "id": "55e605ce-2496-4db0-bf3e-876690d6b41f",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "653222907882418",
+        "recipientPhoneNumber": "={{ $json.WA_ID.toString() || $('WhatsApp Trigger').item.json.contacts[0].wa_id}}",
+        "textBody": "={{ $json.message_output }}",
+        "additionalFields": {
+          "previewUrl": true
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        624,
+        768
+      ],
+      "id": "24ae4e12-877c-49dc-b654-075803f7fb6b",
+      "name": "Send message",
+      "webhookId": "b624a3d8-ff68-40c5-8f80-1e3fb7eec671",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "zA2AAYpsaZiKDA5q",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Switch of Input\n**It will switch between text and audio input**",
+        "height": 272,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2544,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "e7eeabba-7403-40ef-b67d-9c734222ce95",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Input variable\n**It will assign a variable to input message**",
+        "height": 272,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1856,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "d169cc3e-c842-4b39-b155-f2584f7dd007",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "## Download the audio\n**Download the audio of WhatsApp and also generate URL of the audio**",
+        "height": 256,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2368,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "396dbff5-0a91-4fdd-b682-c60090ace582",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "## Binary conversion\n**Convert audio into binary form of data**",
+        "height": 256,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2048,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "3cbaaa53-33d2-4657-98bb-0b59c7cbe93c",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "## Audio to text\n**Convert audio to text using openAI API**",
+        "height": 256,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1728,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "9400bd31-1d77-4fc0-8668-bb2c5221de5a",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "## Conversion\n**Convert text to symbol if needed**",
+        "height": 256,
+        "width": 304
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1408,
+        -144
+      ],
+      "typeVersion": 1,
+      "id": "d3232ada-e13d-4eca-a1ed-5cd58c655622",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## Switch for status\n**It will check if the action is check_status or not**",
+        "height": 272,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        368
+      ],
+      "typeVersion": 1,
+      "id": "b0fccae0-8934-4aad-96e9-c054a3ba1313",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## Get rows\n**Fetch the rows from the sheet where meeting date match**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "e39cfca0-4702-41d4-8601-b468bf8813c6",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "content": "## Set the format\n**It will create a message to send WhatsApp.**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        176,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "904058b2-7f25-4ace-ac39-760c97d4b452",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "## Send WhatsApp Message\n**Send the meeting list to the owner**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        656
+      ],
+      "typeVersion": 1,
+      "id": "0439a61b-a120-4df5-8708-c914d81b97a6",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "## Switch between action\n**Switch between action whether it is schedule or reschedule or cancel**",
+        "height": 272,
+        "width": 320
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -112,
+        1136
+      ],
+      "typeVersion": 1,
+      "id": "07585332-49a5-4698-9ece-22bd6cb060f7",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "## Send message for Schedule",
+        "height": 224,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        944
+      ],
+      "typeVersion": 1,
+      "id": "03676a00-5bdd-40be-802c-8934aaa9f4c7",
+      "name": "Sticky Note25"
+    },
+    {
+      "parameters": {
+        "content": "## Send message for Reschedule",
+        "height": 224,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        1184
+      ],
+      "typeVersion": 1,
+      "id": "3af03b99-b73f-4003-a59a-cbf73e3b0b0b",
+      "name": "Sticky Note27"
+    },
+    {
+      "parameters": {
+        "content": "## Send message for Cancel",
+        "height": 224,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        1424
+      ],
+      "typeVersion": 1,
+      "id": "e69327bd-915c-4702-b435-59de85bb034a",
+      "name": "Sticky Note28"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Read": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets add": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets Update": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar create": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar Update": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Execute Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download media": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Code2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code5": {
+      "main": [
+        [
+          {
+            "node": "Switch2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch2": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send a message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code2": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e747ca31-fd28-43da-b9aa-3240f183ac69",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f8caf08ed0a014fad0ff4d689ec62fcdd244311cb6413f85dd9ad6bc672dd85d"
+  },
+  "id": "GG8E8L2kDbulv4Zv",
+  "tags": []
+}
