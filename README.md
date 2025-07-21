@@ -177,8 +177,7 @@ Follows the same response as a scheduled message.
 
 ## 🤝 Contact
 
-**Author:** Arya Shah  
-**Issues:** [Open an issue](https://github.com/yourusername/WhatsApp-AI-Scheduler/issues)
+**Author:** Arya Shah
 
 ---
 
