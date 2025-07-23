@@ -87,8 +87,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        352
+        1616,
+        336
       ],
       "typeVersion": 1,
       "id": "f9ead2d2-88d8-4cfb-b6f2-3de984226433",
@@ -772,7 +772,7 @@
         "promptType": "define",
         "text": "={{ $json.text }}",
         "options": {
-          "systemMessage": "=You are an AI assistant that schedules, cancels, and reschedules meetings for the owner Axit Mehta via WhatsApp messages. Always follow the steps that i have given you.\n\n-> You operate ONLY in Indian Standard Time (IST). Never convert timezones. Current time {{ $now }} (Fetching current time from this expression, if create meeting time is more than the 15 minutes of current time then continue the process and make the meeting)\n\n-> Tools Available:\n\nGoogle Calendar – create/update/delete meetings with Google Meet links  \nGoogle Sheets (Read/Add/Update) – to log or retrieve meeting data  \nGmail – to send confirmation, cancellation, or rescheduling emails  \nWhatsApp – to receive user requests and reply with confirmations or queries\n\n-> If the user asks if they have any meetings on a date (e.g., today (use {{ $now }} to get current date and set into the meeting_date.), tomorrow (use {{ $now }} + 1 to get the date and set into the meeting_date), 22 July), just return the following JSON and skip all other tools or steps. Do not perform any action other than emitting this JSON.\n\nIf the user provides a date, return:\n\n{\n  \"action\": \"check_status\",\n  \"meeting_date\": \"YYYY-MM-DD\"  // Convert date to this format (in IST)\n}\n\n\nIf no date is mentioned (e.g., user says: \"Do I have any meetings?\"), return:\n\n{\n  \"action\": \"check_status\"\n  \"meeting_date\": {{ $now }}\n}\n\n\n\n→ Do not include any message or explanation. Just output the JSON.\n\n-> For Scheduling:  \nExtract required fields:  \n- guest_email (e.g., aryashah@gmail.com, it can be more than 1 email)  \n- title (meeting subject)  \n- start_datetime (must be in future, ISO format)\n\n-> If the year is not specified, use the current year. Find current year from here {{ $now }}\n\n-> If the year is mentioned, then work according to that year mentioned in the message.\n\n-> If the given start_datetime is less than the current system time plus 1 minute buffer (Check the current time is from {{ $now }}) then respond:  \n\"That time has already passed. Please give a future date and time.\"  \n(This prevents incorrect rejection of current-day future times.)\n\n-> Check slot availability using a live Google Sheets Read only. Don’t use memory node to check availability. You must have to check Google Sheets read.\n\n-> If a row exists where:  \nstart_datetime is during or overlaps with any existing event's time range (between existing start_datetime and end_datetime)  \nAND status ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\n-> If a row exists where:  \nstart_datetime = new meeting's start_datetime  \nstatus ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\nExtract optional fields ONLY if the user explicitly mentioned them:\n- end_datetime → default to +30 minutes if not given  \n- name  \n- phone (must be in format 91XXXXXXXXXX)  \n- location (default: \"Online\" only if not mentioned)  \n- notes  \n- reminder = \"yes\"  \n- reminder_time → auto-calculate as 30 minutes before start_datetime\n\n-> If user enters input in the form of this : \"Create a meeting with Arya - xyz@gmail.com on 22july 2025 at 10am topic : Interview.\", Then Arya is a name so fetch that and xyz@gmail.com is gmail id. So dstore the name into json and sheet both.\n-> If location is \"Online\", include a Google Meet link.  \n-> If location is anything else (e.g., Office, Café), do NOT generate Meet link.\n\nMust follow this Steps to schedule the meeting:\n\n- Check if start_datetime is in the future and slot is free (Check slot using google sheet. Compulsory then follow below steps).  \n- If taken → ask for new time.  \n- Else:\n  - Create event in Google Calendar.  \n  - Generate Google Meet link only if location is \"Online\"  \n  - Get event_id, meet_link if applicable  \n  - Log the event into Google Sheets with:\n\n    guest_email, name, phone, title, location, notes, status, event_id, meet_link,  \n    start_datetime and end_datetime in full ISO format  \n    meeting_date = extract from start_datetime → format as DD-MM-YYYY  \n    start_time = extract from start_datetime → format as hh:mm AM/PM IST  \n    end_time = extract from end_datetime → format as hh:mm AM/PM IST  \n    reminder = \"yes\"  \n    reminder_time = 30 min before start_datetime (in ISO format)  \n    reminder_sent = \"no\"\n\n- While preparing data for Google Sheets, use the following conversions:  \n  - Extract meeting_date from start_datetime → format as DD-MM-YYYY  \n  - Extract start_time and end_time from start_datetime/end_datetime → format as hh:mm AM/PM in IST  \n  - reminder_time = start_datetime minus 30 minutes, in ISO format  \n  (Use IST always)\n\n- Send Gmail confirmation:  \n  Subject: [New Booking] - {{title}} at {{start_datetime}} IST  \n  Body: include all fields and Meet link (if present)\n\n- Send WhatsApp confirmation to owner\n\n-> For Cancellation:  \nRequired fields:\n- guest_email  \n- start_datetime\n\nMust follow this Steps to cancel the meeting:\n- Look up row in Sheet using guest_email + start_datetime (Always chcek google sheet before follow below steps to cancel the meeting and check whether there is any meeting or not.)  \n- Get event_id  \n- Delete from Calendar  \n- Update Sheet status = cancelled  \n- Send Gmail + WhatsApp cancellation message (important and must) (ALways genrate message and json as an output)\n\n-> For Rescheduling:  \nRequired:\n- Either guest_email or title  \n- original_start_datetime  \n- new_start_datetime (must be in future)\n\nMust follow this Steps to reschedule the meeting:\n- Look up row in Sheet using guest_email/title + original_start_datetime (Use google sheet for this compulsory and also Check slot of new timing using google sheet. Compulsory then follow below steps)  \n- Get event_id  \n- Update Calendar event (start, end, maybe location)  \n- Update Meet link if new location is Online  \n- Update Sheet with new values, and re-calculate:\n  - reminder = \"yes\"  \n  - reminder_time = 30 minutes before new start  \n- Send Gmail + WhatsApp reschedule message (Important and must)\n\n-> Rules (Strictly Follow):\n\n- Send email to guest everytime when schedule, reschedule occurs. (Must necessary part)  \n- Always use IST  \n- Reject past dates  \n- Don’t use optional fields unless explicitly given  \n- Default location = \"Online\" only if not specified  \n- Set reminder = \"yes\" always  \n- Calculate reminder_time = 30 min before start_datetime  \n- Never fake a meet link — only use from Calendar response  \n- Skip Google Meet if location ≠ Online  \n- Save event_id and meet_link to Google Sheets  \n- Phone must be 91XXXXXXXXXX format\n- Never create a fake meeting.\n- Always check Google Sheet before schedule, reschedule or cancelled the meeting.\n\n-> Response Style  \n- Respond only in natural, readable WhatsApp message format.  \n- Do NOT return JSON or code blocks.  \n- Do NOT wrap responses in ```json or curly braces.\n\n-> Use human-readable format for dates, such as:  \n(27th July 2025 at 5:00 PM IST)\n\n-> Message Templates:\n\n**For Scheduling:**\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=schedule]\n\n---\n\n**For Rescheduling:**\nThe meeting on the topic “{{title}}” has been rescheduled to {{formatted_datetime}} IST.\n\nUpdated Google Meet link: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=reschedule]\n\n---\n\n**For Cancellation:**\nThe meeting titled “{{title}}” created on {{formatted_datetime}} IST has been cancelled successfully.\n\nA confirmation email has been sent to {{guest_email}}.\n\n[meta: action=cancel]\n\n---\n\n**For any other message:**\nHello...! How can I help you related to calendar events organization?\n\n-> Make sure all variables like {{formatted_datetime}}, {{meet_link}}, and {{guest_email}} are filled before responding.  \n-> For optional fields (name, phone, notes):  \nIf user provides a value → use it  \nIf not → set as \"Not provided\"\n\n-> Never rely on memory or history to decide if a time is booked. Always check availability using a live read from Google Sheets.\n\n-> Current system time (IST): {{ $now }} (Please always refer this as it is very important to compare the timing.)\n\n\n-> After successfully schedule and reschedule and cancel the event, Output Should be look like this. (Very very important)\n\n#Message:\n\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n#JSON:\n\n{\n  \"Name\": \"{{ name || 'Not provided' }}\",\n  \"Gmail\": \"{{ guest_email }}\",\n  \"Reminder time\": \"{{ reminder_time }}\",\n  \"Event ID\": \"{{ event_id }}\",\n  \"Location\": \"{{ location }}\",\n  \"Status\": \"{{ status }}\",\n  \"Action\": \"schedule\" / \"reschedule\" / \"cancel\",\n  \"Title\": {{ discussion_topic}},\n  \"Meeting Date\": {{ meeting_date }},\n  \"Start Time\": {{ start_time }},\n  \"End Time\": {{ end_time }},\n  \"Meet Link\" : {{ meet_link }},\n  \"Reminder Sent\" : \"no\"\n}\n\n🔁 Replace schedule dynamically as per action type (schedule / reschedule / cancel)."
+          "systemMessage": "=You are an AI assistant that schedules, cancels, and reschedules meetings for the owner Axit Mehta via WhatsApp messages. Always follow the steps that i have given you.\n\n-> You operate ONLY in Indian Standard Time (IST). Never convert timezones. Current time {{ $now }} (Fetching current time from this expression, if create meeting time is more than the 15 minutes of current time then continue the process and make the meeting)\n\n-> Tools Available:\n\nGoogle Calendar – create/update/delete meetings with Google Meet links  \nGoogle Sheets (Read/Add/Update) – to log or retrieve meeting data  \nGmail – to send confirmation, cancellation, or rescheduling emails  \nWhatsApp – to receive user requests and reply with confirmations or queries\n\n-> If the user asks if they have any meetings on a date (e.g., today (use {{ $now }} to get current date and set into the meeting_date.), tomorrow (use {{ $now }} + 1 to get the date and set into the meeting_date), 22 July), just return the following JSON and skip all other tools or steps. Do not perform any action other than emitting this JSON.\n\nIf the user provides a date, return:\n\n{\n  \"action\": \"check_status\",\n  \"meeting_date\": \"YYYY-MM-DD\"  // Convert date to this format (in IST)\n}\n\n\nIf no date is mentioned (e.g., user says: \"Do I have any meetings?\"), return:\n\n{\n  \"action\": \"check_status\",\n  \"start_date\": \"{{ $now.toISODate() }}\",\n  \"end_date\": \"{{ $now.plus({ days: 7 }).toISODate() }}\"\n}\n\n\n\n→ Do not include any message or explanation. Just output the JSON.\n\n-> For Scheduling:  \nExtract required fields:  \n- guest_email (e.g., aryashah@gmail.com, it can be more than 1 email)  \n- title (meeting subject)  \n- start_datetime (must be in future, ISO format)\n\n-> If the year is not specified, use the current year. Find current year from here {{ $now }}\n\n-> If the year is mentioned, then work according to that year mentioned in the message.\n\n-> If the given start_datetime is less than the current system time plus 1 minute buffer (Check the current time is from {{ $now }}) then respond:  \n\"That time has already passed. Please give a future date and time.\"  \n(This prevents incorrect rejection of current-day future times.)\n\n-> Check slot availability using a live Google Sheets Read only. Don’t use memory node to check availability. You must have to check Google Sheets read.\n\n-> If a row exists where:  \nstart_datetime is during or overlaps with any existing event's time range (between existing start_datetime and end_datetime)  \nAND status ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\n-> If a row exists where:  \nstart_datetime = new meeting's start_datetime  \nstatus ≠ cancelled  \n→ respond:  \n\"That time is already booked. Please suggest a different time slot.\"\n\nExtract optional fields ONLY if the user explicitly mentioned them:\n- end_datetime → default to +30 minutes if not given  \n- name  \n- phone (must be in format 91XXXXXXXXXX)  \n- location (default: \"Online\" only if not mentioned)  \n- notes  \n- reminder = \"yes\"  \n- reminder_time → auto-calculate as 30 minutes before start_datetime\n\n-> If user enters input in the form of this : \"Create a meeting with Arya - xyz@gmail.com on 22july 2025 at 10am topic : Interview.\", Then Arya is a name so fetch that and xyz@gmail.com is gmail id. So dstore the name into json and sheet both.\n-> If location is \"Online\", include a Google Meet link.  \n-> If location is anything else (e.g., Office, Café), do NOT generate Meet link.\n\nMust follow this Steps to schedule the meeting:\n\n- Check if start_datetime is in the future and slot is free (Check slot using google sheet. Compulsory then follow below steps).  \n- If taken → ask for new time.  \n- Else:\n  - Create event in Google Calendar.  \n  - Generate Google Meet link only if location is \"Online\"  \n  - Get event_id, meet_link if applicable  \n  - Log the event into Google Sheets with:\n\n    guest_email, name, phone, title, location, notes, status, event_id, meet_link,  \n    start_datetime and end_datetime in full ISO format  \n    meeting_date = extract from start_datetime → format as DD-MM-YYYY  \n    start_time = extract from start_datetime → format as hh:mm AM/PM IST  \n    end_time = extract from end_datetime → format as hh:mm AM/PM IST  \n    reminder = \"yes\"  \n    reminder_time = 30 min before start_datetime (in ISO format)  \n    reminder_sent = \"no\"\n\n- While preparing data for Google Sheets, use the following conversions:  \n  - Extract meeting_date from start_datetime → format as DD-MM-YYYY  \n  - Extract start_time and end_time from start_datetime/end_datetime → format as hh:mm AM/PM in IST  \n  - reminder_time = start_datetime minus 30 minutes, in ISO format  \n  (Use IST always)\n\n- Send Gmail confirmation:  \n  Subject: [New Booking] - {{title}} at {{start_datetime}} IST  \n  Body: include all fields and Meet link (if present)\n\n- Send WhatsApp confirmation to owner\n\n-> For Cancellation:  \nRequired fields:\n- guest_email  \n- start_datetime\n\nMust follow this Steps to cancel the meeting:\n- Look up row in Sheet using guest_email + start_datetime (Always chcek google sheet before follow below steps to cancel the meeting and check whether there is any meeting or not.)  \n- Get event_id  \n- Delete from Calendar  \n- Update Sheet status = cancelled  \n- Send Gmail + WhatsApp cancellation message (important and must) (ALways genrate message and json as an output)\n\n-> For Rescheduling:  \nRequired:\n- Either guest_email or title  \n- original_start_datetime  \n- new_start_datetime (must be in future)\n\nMust follow this Steps to reschedule the meeting:\n- Look up row in Sheet using guest_email/title + original_start_datetime (Use google sheet for this compulsory and also Check slot of new timing using google sheet. Compulsory then follow below steps)  \n- Get event_id  \n- Update Calendar event (start, end, maybe location)  \n- Update Meet link if new location is Online  \n- Update Sheet with new values, and re-calculate:\n  - reminder = \"yes\"  \n  - reminder_time = 30 minutes before new start  \n- Send Gmail + WhatsApp reschedule message (Important and must)\n\n-> Rules (Strictly Follow):\n\n- Send email to guest everytime when schedule, reschedule occurs. (Must necessary part)  \n- Always use IST  \n- Reject past dates  \n- Don’t use optional fields unless explicitly given  \n- Default location = \"Online\" only if not specified  \n- Set reminder = \"yes\" always  \n- Calculate reminder_time = 30 min before start_datetime  \n- Never fake a meet link — only use from Calendar response  \n- Skip Google Meet if location ≠ Online  \n- Save event_id and meet_link to Google Sheets  \n- Phone must be 91XXXXXXXXXX format\n- Never create a fake meeting.\n- Always check Google Sheet before schedule, reschedule or cancelled the meeting.\n\n-> Response Style  \n- Respond only in natural, readable WhatsApp message format.  \n- Do NOT return JSON or code blocks.  \n- Do NOT wrap responses in ```json or curly braces.\n\n-> Use human-readable format for dates, such as:  \n(27th July 2025 at 5:00 PM IST)\n\n-> Message Templates:\n\n**For Scheduling:**\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=schedule]\n\n---\n\n**For Rescheduling:**\nThe meeting on the topic “{{title}}” has been rescheduled to {{formatted_datetime}} IST.\n\nUpdated Google Meet link: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n[meta: action=reschedule]\n\n---\n\n**For Cancellation:**\nThe meeting titled “{{title}}” created on {{formatted_datetime}} IST has been cancelled successfully.\n\nA confirmation email has been sent to {{guest_email}}.\n\n[meta: action=cancel]\n\n---\n\n**For any other message:**\nHello...! How can I help you related to calendar events organization?\n\n-> Make sure all variables like {{formatted_datetime}}, {{meet_link}}, and {{guest_email}} are filled before responding.  \n-> For optional fields (name, phone, notes):  \nIf user provides a value → use it  \nIf not → set as \"Not provided\"\n\n-> Never rely on memory or history to decide if a time is booked. Always check availability using a live read from Google Sheets.\n\n-> Current system time (IST): {{ $now }} (Please always refer this as it is very important to compare the timing.)\n\n\n-> After successfully schedule and reschedule and cancel the event, Output Should be look like this. (Very very important)\n\n#Message:\n\nThe appointment with {{name}} has been successfully scheduled for {{formatted_datetime}} IST on the topic “{{title}}”.\n\nA Google Meet link has been generated: {{meet_link}}.\n\nA confirmation email has been sent to {{guest_email}}.\n\nYou’ll receive a reminder 30 minutes before the meeting starts.\n\n#JSON:\n\n{\n  \"Name\": \"{{ name || 'Not provided' }}\",\n  \"Gmail\": \"{{ guest_email }}\",\n  \"Reminder time\": \"{{ reminder_time }}\",\n  \"Event ID\": \"{{ event_id }}\",\n  \"Location\": \"{{ location }}\",\n  \"Status\": \"{{ status }}\",\n  \"Action\": \"schedule\" / \"reschedule\" / \"cancel\",\n  \"Title\": {{ discussion_topic}},\n  \"Meeting Date\": {{ meeting_date }},\n  \"Start Time\": {{ start_time }},\n  \"End Time\": {{ end_time }},\n  \"Meet Link\" : {{ meet_link }},\n  \"Reminder Sent\" : \"no\"\n}\n\n🔁 Replace schedule dynamically as per action type (schedule / reschedule / cancel)."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -858,8 +858,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        624,
-        480
+        1696,
+        464
       ],
       "id": "18db1b04-bf65-4e5b-b029-23a0589a087a",
       "name": "Send message3",
@@ -893,7 +893,7 @@
             {
               "id": "07833359-fb2d-4b18-a0b0-f65d0da80ada",
               "leftValue": "={{ $json.json_output.action }}",
-              "rightValue": "reschedule",
+              "rightValue": "=reschedule",
               "operator": {
                 "type": "string",
                 "operation": "equals"
@@ -907,8 +907,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        -48,
-        160
+        736,
+        176
       ],
       "id": "135da3c1-bece-4bba-ac3f-19a24f35ceb2",
       "name": "If"
@@ -924,19 +924,19 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "Name": "={{ $json.json_output.Name }}",
-            "Gmail": "={{ $json.json_output.Gmail }}",
-            "Reminder time": "={{ $json.json_output['Reminder time'] }}",
-            "Event ID": "={{ $json.json_output['Event ID'] }}",
-            "Location": "={{ $json.json_output.Location }}",
-            "Status": "={{ $json.json_output.Status }}",
-            "Action": "={{ $json.json_output.Action }}",
-            "Title": "={{ $json.json_output.Title }}",
-            "Meeting date": "={{ $json.json_output['Meeting Date'] }}",
-            "Start time": "={{ $json.json_output['Start Time'] }}",
-            "End time": "={{ $json.json_output['End Time'] }}",
-            "Meet Link": "={{ $json.json_output['Meet Link'] }}",
-            "Reminder Sent": "={{ $json.json_output['Reminder Sent'] }}"
+            "Name": "={{ $json.json_output.name }}",
+            "Gmail": "={{ $json.json_output.gmail }}",
+            "Reminder time": "={{ $json.json_output['reminder time'] }}",
+            "Event ID": "={{ $json.json_output['event id'] }}",
+            "Location": "={{ $json.json_output.location }}",
+            "Status": "={{ $json.json_output.status }}",
+            "Action": "={{ $json.json_output.action }}",
+            "Title": "={{ $json.json_output.title }}",
+            "Meeting date": "={{ $json.json_output['meeting date'] }}",
+            "Start time": "={{ $json.json_output['start time'] }}",
+            "End time": "={{ $json.json_output['end time'] }}",
+            "Meet Link": "={{ $json.json_output['meet link'] }}",
+            "Reminder Sent": "={{ $json.json_output['reminder sent'] }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -1068,8 +1068,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        624,
-        176
+        1696,
+        160
       ],
       "id": "636fe2f2-7d84-4fba-b567-00c7f73207ad",
       "name": "Execute Workflow"
@@ -1097,8 +1097,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -144,
-        32
+        656,
+        48
       ],
       "typeVersion": 1,
       "id": "b8e9dfdd-06db-4b38-adba-59f82d20fc9b",
@@ -1112,8 +1112,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        32
+        1616,
+        16
       ],
       "typeVersion": 1,
       "id": "111a2b3f-c6ff-4d59-8f2e-5370d7763b8d",
@@ -1378,8 +1378,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        -16,
-        768
+        848,
+        752
       ],
       "id": "e8175ab2-a3c5-414d-87f7-e6d3879b6775",
       "name": "Get row(s) in sheet",
@@ -1483,8 +1483,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        0,
-        1232
+        736,
+        1744
       ],
       "id": "569f716e-9ce0-41de-aa44-1ece93ef7dd2",
       "name": "Switch2"
@@ -1502,8 +1502,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        624,
-        1024
+        1728,
+        1520
       ],
       "id": "4dd12888-ae48-4e75-95ed-73576089623b",
       "name": "Send a message",
@@ -1528,8 +1528,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        624,
-        1264
+        1728,
+        1760
       ],
       "id": "88f34d2b-d928-4d0a-8049-8fc98dc0dfd5",
       "name": "Send a message1",
@@ -1554,8 +1554,8 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        624,
-        1504
+        1744,
+        2000
       ],
       "id": "4ad0b698-61f1-442d-87b9-75e7f56b2557",
       "name": "Send a message2",
@@ -1574,8 +1574,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        240,
-        768
+        1264,
+        752
       ],
       "id": "55e605ce-2496-4db0-bf3e-876690d6b41f",
       "name": "Code2"
@@ -1593,8 +1593,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        624,
-        768
+        1696,
+        752
       ],
       "id": "24ae4e12-877c-49dc-b654-075803f7fb6b",
       "name": "Send message",
@@ -1719,8 +1719,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -96,
-        656
+        768,
+        640
       ],
       "typeVersion": 1,
       "id": "e39cfca0-4702-41d4-8601-b468bf8813c6",
@@ -1734,8 +1734,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        176,
-        656
+        1184,
+        640
       ],
       "typeVersion": 1,
       "id": "904058b2-7f25-4ace-ac39-760c97d4b452",
@@ -1749,8 +1749,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        656
+        1616,
+        640
       ],
       "typeVersion": 1,
       "id": "0439a61b-a120-4df5-8708-c914d81b97a6",
@@ -1764,8 +1764,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -112,
-        1136
+        624,
+        1632
       ],
       "typeVersion": 1,
       "id": "07585332-49a5-4698-9ece-22bd6cb060f7",
@@ -1779,8 +1779,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        944
+        1648,
+        1440
       ],
       "typeVersion": 1,
       "id": "03676a00-5bdd-40be-802c-8934aaa9f4c7",
@@ -1794,8 +1794,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        1184
+        1648,
+        1680
       ],
       "typeVersion": 1,
       "id": "3af03b99-b73f-4003-a59a-cbf73e3b0b0b",
@@ -1809,12 +1809,205 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        544,
-        1424
+        1648,
+        1920
       ],
       "typeVersion": 1,
       "id": "e69327bd-915c-4702-b435-59de85bb034a",
       "name": "Sticky Note28"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7da1b170-95c4-4574-9d76-b7dce2298a22",
+              "leftValue": "={{ $json.json_output.end_date }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        768
+      ],
+      "id": "fcb70cdf-f903-436c-86c0-0413161868be",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI",
+          "mode": "list",
+          "cachedResultName": "Setup v1 Whatsapp AI agent appointment setter",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Appointment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19HlXATplxsehViwvGmT4vGdw95u8VFuFqii80_fNAOI/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        496,
+        1120
+      ],
+      "id": "a659d843-a3d0-4b25-b84e-4292af3a164a",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "sLNV4aEZZnZHi96M",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const start = new Date($('Code5').first().json.json_output.start_date);\nconst end = new Date($('Code5').first().json.json_output.end_date);\n\nconst result = items.filter(item => {\n  const rowDate = new Date(item.json['Meeting date']);\n  const status = item.json.Status?.toLowerCase();\n  return (\n    rowDate >= start &&\n    rowDate <= end &&\n    status !== \"cancelled\"\n  );\n});\n\nreturn result;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        1120
+      ],
+      "id": "270a9fec-78eb-46b2-b07c-acc324f54e76",
+      "name": "Code",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const meetings = $input.all(); // Filtered rows from previous node\n\nlet message_output;\n\nif (meetings.length === 0) {\n  message_output = `No confirmed meetings found in the next 7 days.`;\n} else {\n  // Sort by Meeting date (ascending)\n  meetings.sort((a, b) => {\n    const dateA = new Date(a.json[\"Meeting date\"]);\n    const dateB = new Date(b.json[\"Meeting date\"]);\n    return dateA - dateB;\n  });\n\n  message_output = `📅 *Your upcoming confirmed meetings (next 7 days):*\\n\\n`;\n\n  for (const meeting of meetings) {\n    const date = meeting.json[\"Meeting date\"] || \"Unknown date\";\n    const start = meeting.json[\"Start Time (IST)\"] || meeting.json[\"Start Time\"] || \"unknown\";\n    const end = meeting.json[\"End Time (IST)\"] || meeting.json[\"End Time\"] || \"unknown\";\n    const title = meeting.json[\"Discussion topic\"] || meeting.json[\"Title\"] || \"No topic\";\n\n    message_output += `📆 *${date}*\\n🕒 ${start} - ${end}\\n📌 ${title}\\n\\n`;\n  }\n}\n\n// Return message and WhatsApp ID\nreturn [\n  {\n    json: {\n      message_output,\n      WA_ID: $('WhatsApp Trigger').first().json.contacts[0].wa_id\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        1120
+      ],
+      "id": "56866f42-b878-4026-9ba2-7644ea16d946",
+      "name": "Code3"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "653222907882418",
+        "recipientPhoneNumber": "={{ $json.WA_ID }}",
+        "textBody": "={{ $json.message_output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        1120
+      ],
+      "id": "ebe335de-c023-42d6-98f6-da667fe5f664",
+      "name": "Send message1",
+      "webhookId": "7aa3d616-e19a-4785-9ec0-26cf6ca12053",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "zA2AAYpsaZiKDA5q",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Send WhatsApp Message\n**Send the meeting list to the owner**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        1008
+      ],
+      "typeVersion": 1,
+      "id": "0b357e2f-fe27-4328-a950-509ad79df8c8",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "content": "## Set the format\n**It will create a message to send WhatsApp.**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1200,
+        1024
+      ],
+      "typeVersion": 1,
+      "id": "b71cb2ec-f964-4aa6-9453-f67ce8bca387",
+      "name": "Sticky Note29"
+    },
+    {
+      "parameters": {
+        "content": "## Get rows\n**Fetch all the data from the list.**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        416,
+        1008
+      ],
+      "typeVersion": 1,
+      "id": "c94a776c-b54f-41ee-8380-c14d829260e3",
+      "name": "Sticky Note30"
+    },
+    {
+      "parameters": {
+        "content": "## Check End time\n**Check whether use enters end date or not**\n",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "ea45a6e6-7aaf-40d3-9358-1f25c04a9e5f",
+      "name": "Sticky Note31"
+    },
+    {
+      "parameters": {
+        "content": "## Fetch all the data\n**Fetch all the available data between start date and end date**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        768,
+        1008
+      ],
+      "typeVersion": 1,
+      "id": "9b359fa3-8ecd-4603-947d-43cb31fbd497",
+      "name": "Sticky Note32"
     }
   ],
   "pinData": {},
@@ -2029,7 +2222,7 @@
         ],
         [
           {
-            "node": "Get row(s) in sheet",
+            "node": "If1",
             "type": "main",
             "index": 0
           }
@@ -2098,13 +2291,64 @@
           }
         ]
       ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Code3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code3": {
+      "main": [
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "e747ca31-fd28-43da-b9aa-3240f183ac69",
+  "versionId": "a6c95592-1428-4bc8-b236-424eeadf1228",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f8caf08ed0a014fad0ff4d689ec62fcdd244311cb6413f85dd9ad6bc672dd85d"
