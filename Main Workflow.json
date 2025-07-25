@@ -87,7 +87,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1616,
+        1648,
         336
       ],
       "typeVersion": 1,
@@ -858,7 +858,7 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        1696,
+        1728,
         464
       ],
       "id": "18db1b04-bf65-4e5b-b029-23a0589a087a",
@@ -907,8 +907,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        736,
-        176
+        304,
+        -336
       ],
       "id": "135da3c1-bece-4bba-ac3f-19a24f35ceb2",
       "name": "If"
@@ -1068,8 +1068,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1696,
-        160
+        1712,
+        -352
       ],
       "id": "636fe2f2-7d84-4fba-b567-00c7f73207ad",
       "name": "Execute Workflow"
@@ -1097,8 +1097,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        656,
-        48
+        208,
+        -480
       ],
       "typeVersion": 1,
       "id": "b8e9dfdd-06db-4b38-adba-59f82d20fc9b",
@@ -1112,8 +1112,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1616,
-        16
+        1632,
+        -480
       ],
       "typeVersion": 1,
       "id": "111a2b3f-c6ff-4d59-8f2e-5370d7763b8d",
@@ -1134,6 +1134,7 @@
       "id": "e7e03f2f-db80-49a2-a4ab-fa9f800a543b",
       "name": "Download media",
       "webhookId": "5399ce8f-23d8-4987-b1b3-a96851186d99",
+      "alwaysOutputData": true,
       "credentials": {
         "whatsAppApi": {
           "id": "5k1LCvxw6e9wDyxA",
@@ -1183,68 +1184,6 @@
           "name": "OpenAi account 2"
         }
       }
-    },
-    {
-      "parameters": {
-        "rules": {
-          "values": [
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "leftValue": "={{ $json.messages[0].type }}",
-                    "rightValue": "audio",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals"
-                    },
-                    "id": "f37ce3a1-4d5b-40d2-87b0-5525fed19645"
-                  }
-                ],
-                "combinator": "and"
-              }
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 2
-                },
-                "conditions": [
-                  {
-                    "id": "8f0889fe-15ed-47d5-bea5-835690726e26",
-                    "leftValue": "={{ $json.messages[0].type }}",
-                    "rightValue": "text",
-                    "operator": {
-                      "type": "string",
-                      "operation": "equals",
-                      "name": "filter.operator.equals"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              }
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.switch",
-      "typeVersion": 3.2,
-      "position": [
-        -2432,
-        464
-      ],
-      "id": "a14b9bc2-e992-4017-a05f-d02f988cee04",
-      "name": "Switch"
     },
     {
       "parameters": {
@@ -1378,7 +1317,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.6,
       "position": [
-        848,
+        832,
         752
       ],
       "id": "e8175ab2-a3c5-414d-87f7-e6d3879b6775",
@@ -1554,7 +1493,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1744,
+        1728,
         2000
       ],
       "id": "4ad0b698-61f1-442d-87b9-75e7f56b2557",
@@ -1593,7 +1532,7 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        1696,
+        1728,
         752
       ],
       "id": "24ae4e12-877c-49dc-b654-075803f7fb6b",
@@ -1749,7 +1688,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1616,
+        1648,
         640
       ],
       "typeVersion": 1,
@@ -1872,10 +1811,11 @@
       "typeVersion": 4.6,
       "position": [
         496,
-        1120
+        1136
       ],
       "id": "a659d843-a3d0-4b25-b84e-4292af3a164a",
       "name": "Get row(s) in sheet1",
+      "alwaysOutputData": true,
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "sLNV4aEZZnZHi96M",
@@ -1890,8 +1830,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        848,
-        1120
+        832,
+        1136
       ],
       "id": "270a9fec-78eb-46b2-b07c-acc324f54e76",
       "name": "Code",
@@ -1899,16 +1839,17 @@
     },
     {
       "parameters": {
-        "jsCode": "const meetings = $input.all(); // Filtered rows from previous node\n\nlet message_output;\n\nif (meetings.length === 0) {\n  message_output = `No confirmed meetings found in the next 7 days.`;\n} else {\n  // Sort by Meeting date (ascending)\n  meetings.sort((a, b) => {\n    const dateA = new Date(a.json[\"Meeting date\"]);\n    const dateB = new Date(b.json[\"Meeting date\"]);\n    return dateA - dateB;\n  });\n\n  message_output = `📅 *Your upcoming confirmed meetings (next 7 days):*\\n\\n`;\n\n  for (const meeting of meetings) {\n    const date = meeting.json[\"Meeting date\"] || \"Unknown date\";\n    const start = meeting.json[\"Start Time (IST)\"] || meeting.json[\"Start Time\"] || \"unknown\";\n    const end = meeting.json[\"End Time (IST)\"] || meeting.json[\"End Time\"] || \"unknown\";\n    const title = meeting.json[\"Discussion topic\"] || meeting.json[\"Title\"] || \"No topic\";\n\n    message_output += `📆 *${date}*\\n🕒 ${start} - ${end}\\n📌 ${title}\\n\\n`;\n  }\n}\n\n// Return message and WhatsApp ID\nreturn [\n  {\n    json: {\n      message_output,\n      WA_ID: $('WhatsApp Trigger').first().json.contacts[0].wa_id\n    }\n  }\n];\n"
+        "jsCode": "const rawItems = $input.all(); // All incoming items\n// Filter out items that have empty or undefined json data\nconst meetings = rawItems.filter(item => Object.keys(item.json || {}).length > 0);\n\nlet message_output;\n\nif (meetings.length === 0) {\n  message_output = `No confirmed meetings found in the next 7 days.`;\n} else {\n  // Sort by Meeting date (ascending)\n  meetings.sort((a, b) => {\n    const dateA = new Date(a.json[\"Meeting date\"]);\n    const dateB = new Date(b.json[\"Meeting date\"]);\n    return dateA - dateB;\n  });\n\n  message_output = `📅 *Your upcoming confirmed meetings (next 7 days):*\\n\\n`;\n\n  for (const meeting of meetings) {\n    const date = meeting.json[\"Meeting date\"] || \"Unknown date\";\n    const start = meeting.json[\"Start Time (IST)\"] || meeting.json[\"Start Time\"] || \"unknown\";\n    const end = meeting.json[\"End Time (IST)\"] || meeting.json[\"End Time\"] || \"unknown\";\n    const title = meeting.json[\"Discussion topic\"] || meeting.json[\"Title\"] || \"No topic\";\n\n    message_output += `📆 *${date}*\\n🕒 ${start} - ${end}\\n📌 ${title}\\n\\n`;\n  }\n}\n\n// Return message and WhatsApp ID\nreturn [\n  {\n    json: {\n      message_output,\n      WA_ID: $('WhatsApp Trigger').first().json.contacts[0].wa_id\n    }\n  }\n];\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
         1280,
-        1120
+        1136
       ],
       "id": "56866f42-b878-4026-9ba2-7644ea16d946",
-      "name": "Code3"
+      "name": "Code3",
+      "alwaysOutputData": true
     },
     {
       "parameters": {
@@ -1921,8 +1862,8 @@
       "type": "n8n-nodes-base.whatsApp",
       "typeVersion": 1,
       "position": [
-        1712,
-        1120
+        1728,
+        1136
       ],
       "id": "ebe335de-c023-42d6-98f6-da667fe5f664",
       "name": "Send message1",
@@ -1942,7 +1883,7 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        1632,
+        1648,
         1008
       ],
       "typeVersion": 1,
@@ -2008,6 +1949,418 @@
       "typeVersion": 1,
       "id": "9b359fa3-8ecd-4603-947d-43cb31fbd497",
       "name": "Sticky Note32"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "model": "tts-1-hd",
+        "input": "=Your meeting has been successfully scheduled for {{ $json.json_output['meeting date'] }}. All additional details will be shared with you shortly via message. Thank you.",
+        "options": {
+          "response_format": "aac",
+          "speed": 1,
+          "binaryPropertyOutput": "data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        928,
+        -192
+      ],
+      "id": "2340d302-87ef-46a2-bd59-80339f9b5190",
+      "name": "Generate audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "WiJe7HZEBufJjDJ4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "138e24a2-7f06-41d2-9507-9327c5faa148",
+              "leftValue": "={{ $('WhatsApp Trigger').item.json.messages[0].type }}",
+              "rightValue": "audio",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "a48d7c52-6fd1-46cd-8377-7159acdfd030",
+              "leftValue": "",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        272,
+        464
+      ],
+      "id": "03c7365e-46b6-4f7b-a116-03f47ede4e6e",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "schedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "30e3c8e9-1fc5-45ea-a5ee-6c9fd2b3e375"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0f59e4c3-a454-4c33-b98e-3308fbf86957",
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "reschedule",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d6c17758-6ef2-4b2d-bf3a-f7c099e71f00",
+                    "leftValue": "={{ $json.json_output.action }}",
+                    "rightValue": "cancel",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        512,
+        16
+      ],
+      "id": "62e80db4-e1d6-42de-ae18-1f679bc79328",
+      "name": "Switch3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v19.0/{{ $('WhatsApp Trigger').item.json.metadata.phone_number_id }}/media",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "whatsAppApi",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "messaging_product",
+              "value": "whatsapp"
+            },
+            {
+              "name": "type",
+              "value": "audio/aac"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1328,
+        32
+      ],
+      "id": "20c3c469-aad3-40c9-8486-5867cdb1657e",
+      "name": "HTTP Request",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "zA2AAYpsaZiKDA5q",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "653222907882418",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "messageType": "audio",
+        "mediaPath": "useMediaId",
+        "mediaId": "={{ $json.id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        32
+      ],
+      "id": "49e22151-8bfa-4950-8e64-a1a61bf60c37",
+      "name": "Send message2",
+      "webhookId": "6ce6f7d4-007e-47eb-863e-16cc192ea395",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "zA2AAYpsaZiKDA5q",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "model": "tts-1-hd",
+        "input": "=Your meeting has been successfully rescheduled to {{ $json.json_output['meeting date'] }} at {{ $json.json_output['start time'] }}. All updated details will be shared with you shortly via message. Thank you.",
+        "options": {
+          "response_format": "aac",
+          "speed": 1,
+          "binaryPropertyOutput": "data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        928,
+        32
+      ],
+      "id": "cd04b93e-9be9-48d1-bf37-0f76e3f20f11",
+      "name": "Generate audio1",
+      "credentials": {
+        "openAiApi": {
+          "id": "WiJe7HZEBufJjDJ4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "model": "tts-1-hd",
+        "input": "=Your meeting scheduled for {{ $json.json_output['meeting date'] }} at {{ $json.json_output['start time'] }} has been successfully cancelled. If this was unintentional, please feel free to schedule. Thank you.",
+        "options": {
+          "response_format": "aac",
+          "speed": 1,
+          "binaryPropertyOutput": "data"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        928,
+        256
+      ],
+      "id": "a93d7ca5-45cf-443d-b55f-4a8695e966bb",
+      "name": "Generate audio2",
+      "credentials": {
+        "openAiApi": {
+          "id": "WiJe7HZEBufJjDJ4",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "audio",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "ec437ee1-8aca-4927-b24b-8ee4ce83e706"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "01e90d0b-5a1e-41ed-89c8-4be6df75bc2c",
+                    "leftValue": "={{ $json.messages[0].type }}",
+                    "rightValue": "text",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -2448,
+        464
+      ],
+      "id": "fc442837-18cc-4d86-abeb-46f871a31f5a",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "content": "## Check message Type\n**Check message whether it is audio or text**",
+        "height": 272,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        192,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "33d96c8a-85b5-4040-9799-f0be245f63c4",
+      "name": "Sticky Note33"
+    },
+    {
+      "parameters": {
+        "content": "## Switch between action\n**Switch between schedule, reschedule and cancel**",
+        "height": 320,
+        "width": 272
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        432,
+        -112
+      ],
+      "typeVersion": 1,
+      "id": "acb37672-c275-43b0-b35a-35e0c7409d05",
+      "name": "Sticky Note34"
+    },
+    {
+      "parameters": {
+        "content": "## Generate audio based on Action",
+        "height": 672
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "fb43e11c-3301-4c80-b0d5-615dc5a269b4",
+      "name": "Sticky Note35"
+    },
+    {
+      "parameters": {
+        "content": "## Type converter\n**Give ID of the audio**",
+        "height": 208,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "ffcaeb31-ef32-4f3c-8f32-5a38020e3575",
+      "name": "Sticky Note36"
+    },
+    {
+      "parameters": {
+        "content": "## Send audio message",
+        "height": 224,
+        "width": 256
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1648,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "2b047cf8-41b9-4789-bf0d-189c89483328",
+      "name": "Sticky Note37"
     }
   ],
   "pinData": {},
@@ -2166,24 +2519,6 @@
         ]
       ]
     },
-    "Switch": {
-      "main": [
-        [
-          {
-            "node": "Download media",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields1": {
       "main": [
         [
@@ -2210,12 +2545,12 @@
       "main": [
         [
           {
-            "node": "Send message3",
+            "node": "If",
             "type": "main",
             "index": 0
           },
           {
-            "node": "If",
+            "node": "If2",
             "type": "main",
             "index": 0
           }
@@ -2342,13 +2677,123 @@
           }
         ]
       ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Switch3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch3": {
+      "main": [
+        [
+          {
+            "node": "Generate audio",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate audio1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Generate audio2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate audio": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate audio1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate audio2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download media",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a6c95592-1428-4bc8-b236-424eeadf1228",
+  "versionId": "dacaf827-81a1-408d-b083-d0838854898f",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "f8caf08ed0a014fad0ff4d689ec62fcdd244311cb6413f85dd9ad6bc672dd85d"
